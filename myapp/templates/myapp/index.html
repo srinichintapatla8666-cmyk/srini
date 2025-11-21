@@ -3,8 +3,78 @@
 {% extends "myapp/base.html" %}
 
  {% block body %}  
+<div>
+   {% for item in item_list %}
+    <div class=" m-10 flex  w-1/2 mx-auto">
+          
+          <div> 
 
-{% comment %} {% load static %}
+             <img class="w-80 rounded-lg" src="{{item.Item_image}}" alt=" ">
+
+          </div>
+          <div class= "mx-08 px-10 py-15"> 
+   
+                <div class="font-bold">{{ item.Item_name }}</div>
+                <div>{{ item.Item_desc }}</div>
+                <div class="text-1xl font-bold text-green-700">${{ item.Item_price }}</div>
+                
+
+
+          </div>
+        <div class= "mx-20 px-10 flex py-15 items-center ">
+                   <a class="bg-red-500 text-white font-bold rounded-md-" href="{% url 'myapp:detail' item.id %}"> View Details </a>
+                </div>
+    </div>
+    {% endfor %}
+</div>
+
+  {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ {% comment %} {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">    
@@ -28,24 +98,23 @@
          </div>
           
          </nav> {% endcomment %}
- <ul>
-    {% for item in item_list %}
-      <li>
+ {% comment %} <ul> {% endcomment %}
+    {% comment %} {% for item in item_list %} {% endcomment %}
+      {% comment %} <li> {% endcomment %}
         {% comment %} <a href="/myapp/{{ item.id }}"> {% endcomment %}
-        <a href="{% url 'myapp:detail' item.id %}">
+        {% comment %} <a href="{% url 'myapp:detail' item.id %}">
           <img src="{{item.Item_image}}" alt=" ">
-         {{ item.Item_name }} -> {{ item.Item_desc }} -> {{ item.Item_price }}
-        </a>
+         {{ item.Item_name }} -> {{ item.Item_desc }} -> {{ item.Item_price }} {% endcomment %}
+        {% comment %} </a>
      </li>
      {% endfor %}
- </ul>
+ </ul> {% endcomment %}
 
  {% comment %} </body> {% endcomment %}
 
   
 {% comment %} </html> {% endcomment %}
 
-  {% endblock %}
 
 
 
