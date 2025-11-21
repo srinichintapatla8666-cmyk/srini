@@ -9,6 +9,8 @@ class Item(models.Model):
     Item_name = models.CharField(max_length=50)
     Item_desc = models.CharField(max_length=255)
     Item_price = models.IntegerField()
+    Item_image = models.CharField(max_length=500, default="https://imgcdn.stablediffusionweb.com/2024/10/14/b4676dd8-6fef-4df9-9a4c-5d1c72155b40.jpg")
+    
 
 
     
