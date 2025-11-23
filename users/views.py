@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import SignUpForm
+from django.contrib.auth import logout
 
 def signup(request):
     if request.method == 'POST':
@@ -10,13 +11,17 @@ def signup(request):
             user = form.save()
             login(request, user)  # Automatically log in the user after signup
             messages.success(request, 'Account created successfully!')
-            return redirect('home')  # Redirect to home or any desired page
+            return redirect('login')  # Redirect to home or any desired page
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
 
+def logout_view(request):
+    """Log the user out and redirect to the login page."""
+    logout(request)
+    return redirect('login')
 
 
 
