@@ -25,7 +25,7 @@ def detail(request, id):
 
 
 
-
+@login_required
 def create_item(request):
     form = ItemForm(request.POST or None)
     if request.method == 'POST':
