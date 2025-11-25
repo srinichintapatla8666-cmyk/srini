@@ -5,7 +5,7 @@ from.forms import ItemForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView 
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView   
+from django.views.generic.edit import CreateView,UpdateView,DeleteView   
 
 # Create your views here.   
 # @login_required
@@ -53,14 +53,11 @@ def create_item(request):
     return render(request, "myapp/item-form.html", context )
 
 
-
-    class ItemCreateView(CreateView):
-        model = Item
-        # template_name = 'myapp/item-form.html'
-        fields = ['item_name','item_desc', 'item_price', 'item_image']
-
-
-
+class ItemCreateView(CreateView):
+    model = Item
+    template_name = 'myapp/item-form.html'
+    fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
+    success_url = '/myapp/'
 
 
 
@@ -77,6 +74,14 @@ def update_item(request, id):
     }
     return render(request, "myapp/item-form.html",context)
 
+
+class ItemUpdateView(UpdateView):
+    model = Item
+    fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
+    template_name_suffix = "_update_form"
+    success_url = '/myapp/'
+
+
 def delete_item(request, id):
     item = Item.objects.get(id=id) 
     if request.method == 'POST':
@@ -85,4 +90,8 @@ def delete_item(request, id):
         return redirect('myapp:index')
     return render(request, "myapp/item-delete.html")
 
-    
+class ItemDeleteView(DeleteView):
+    model = Item
+    success_url = '/myapp/'
+
+
