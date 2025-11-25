@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import SignUpForm
@@ -21,7 +22,10 @@ def signup(request):
 def logout_view(request):
     """Log the user out and redirect to the login page."""
     logout(request)
-    return redirect('login')
+    return render(request, 'users/logout.html')
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')
 
 
 

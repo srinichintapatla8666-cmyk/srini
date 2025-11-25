@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     # Use custom logout view so logout can be triggered via GET (e.g. from a link)
     path('logout/', views.logout_view, name='logout'),
+    path('profile/', views.profile, name='profile'),
 ]
 
 

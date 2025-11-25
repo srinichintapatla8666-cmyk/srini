@@ -3,18 +3,27 @@ from django.http import HttpResponse
 from .models import Item
 from.forms import ItemForm
 from django.contrib.auth.decorators import login_required
+from django.views.generic.list import ListView 
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView   
 
 # Create your views here.   
-@login_required
-def index(request):
-    # Geting items from database
-    item_list = Item.objects.all()
-    # Creating context
-    context = {
-        'item_list': item_list
-        }
-    # Passing the context object to the render method along with the template
-    return render(request, "myapp/index.html", context)
+# @login_required
+# def index(request):
+#     # Geting items from database
+#     item_list = Item.objects.all()
+#     # Creating context
+#     context = {
+#         'item_list': item_list
+#         }
+#     # Passing the context object to the render method along with the template
+#     return render(request, "myapp/index.html", context)
+
+class IndexClassView(ListView):
+    model = Item
+    template_name = 'myapp/index.html'
+    context_object_name = 'item_list'
+
 
 def detail(request, id):
     item = Item.objects.get(id=id)
@@ -22,6 +31,12 @@ def detail(request, id):
         'item': item
     }
     return render(request, "myapp/detail.html", context)
+
+
+class FoodDetail(DetailView):
+    model = Item
+    template_name = 'myapp/detail.html'
+    context_object_name = 'item'    
 
 
 
@@ -36,6 +51,19 @@ def create_item(request):
         'form': form
     }
     return render(request, "myapp/item-form.html", context )
+
+
+
+    class ItemCreateView(CreateView):
+        model = Item
+        # template_name = 'myapp/item-form.html'
+        fields = ['item_name','item_desc', 'item_price', 'item_image']
+
+
+
+
+
+
 
 def update_item(request, id):
     item = Item.objects.get(id=id)
