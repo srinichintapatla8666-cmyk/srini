@@ -48,7 +48,7 @@ def create_item(request):
             form.save()
             return redirect('myapp:index') 
     context = {
-        'form': form
+        'form': form 
     }
     return render(request, "myapp/item-form.html", context )
 
@@ -58,6 +58,9 @@ class ItemCreateView(CreateView):
     template_name = 'myapp/item-form.html'
     fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
     success_url = '/myapp/'
+    def form_valid(self, form):
+        form.instance.user_name = self.request.user
+        return super().form_valid(form)
 
 
 
@@ -80,6 +83,9 @@ class ItemUpdateView(UpdateView):
     fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
     template_name_suffix = "_update_form"
     success_url = '/myapp/'
+
+    def get_queryset(self):
+        return Item.objects.filter(user_name = self.request.user)
 
 
 def delete_item(request, id):
