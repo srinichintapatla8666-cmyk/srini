@@ -20,6 +20,7 @@ def signup(request):
     return render(request, 'users/signup.html', {'form': form})
 
 def logout_view(request):
+    
     """Log the user out and redirect to the login page."""
     logout(request)
     return render(request, 'users/logout.html')
