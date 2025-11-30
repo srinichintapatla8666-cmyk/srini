@@ -56,7 +56,7 @@ def create_item(request):
 class ItemCreateView(CreateView):
     model = Item
     template_name = 'myapp/item-form.html'
-    fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
+    fields = ['item_name','item_desc', 'item_price', 'item_image']
     success_url = '/myapp/'
     def form_valid(self, form):
         form.instance.user_name = self.request.user
@@ -80,7 +80,7 @@ def update_item(request, id):
 
 class ItemUpdateView(UpdateView):
     model = Item
-    fields = ['Item_name','Item_desc', 'Item_price', 'Item_image']
+    fields = ['item_name','item_desc', 'item_price', 'item_image']
     template_name_suffix = "_update_form"
     success_url = '/myapp/'
 
