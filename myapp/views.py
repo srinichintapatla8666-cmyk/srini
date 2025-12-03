@@ -96,8 +96,20 @@ def delete_item(request, id):
         return redirect('myapp:index')
     return render(request, "myapp/item-delete.html")
 
-class ItemDeleteView(DeleteView):
-    model = Item
-    success_url = '/myapp/'
+# class ItemDeleteView(DeleteView):
+#     model = Item
+#     success_url = '/myapp/'
 
+class ItemDelete(DeleteView):
+    model = Item
+    success_url = reverse_lazy('myapp:index')
+
+def get_objets(request):
+    for item in Item.objects.all():
+        print(item.item_name)
+
+def get_objets_optimised(request):
+    items = Item.objects.only('item_name')
+    for item in items:
+        print(item.item_name) 
 
