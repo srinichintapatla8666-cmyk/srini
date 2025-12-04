@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from .managers import ItemManager  
+
 
 # Create your models here.
 class Item(models.Model):
@@ -23,8 +25,20 @@ class Item(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True) 
 
+    objects = ItemManager()
+    
+
+class SearchManager(models.Manager):
+    def search(self, query):
+        return self.get_queryset().filter(
+            name__icontains=query
+        )
+
 class Category(models.Model):
     name  = models.CharField(max_length=100)
     added_on = models.DateTimeField(auto_now=True)
+    
+    objects = SearchManager()
+    
     def __str__(self):
         return self.name
