@@ -10,15 +10,15 @@ from django.urls import reverse_lazy
 
 # Create your views here.   
 # @login_required
-# def index(request):
-#     # Geting items from database
-#     item_list = Item.objects.all()
-#     # Creating context
-#     context = {
-#         'item_list': item_list
-#         }
+def index(request):
+    # Geting items from database
+    item_list = Item.objects.all()
+    # Creating context
+    context = {
+        'item_list': item_list
+        }
 #     # Passing the context object to the render method along with the template
-#     return render(request, "myapp/index.html", context)
+    return render(request, "myapp/index.html", context)
 
 class IndexClassView(ListView):
     model = Item
