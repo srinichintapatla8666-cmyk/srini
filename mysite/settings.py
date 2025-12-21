@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from django.conf.global_settings import CACHES
 from pathlib import Path
 from dotenv import load_dotenv
 import os
@@ -153,8 +154,31 @@ LOGIN_URL = 'login'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pictures')
 
 MEDIA_URL = '/pictures/'
+CACHES = {
+    "default":{
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / "cache",
+    }
+}
+LOG_LEVEL = "DEBUG" if os.getenv("DJANGO_DEBUG", "True") == "True" else "WARNING"
 
- 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": BASE_DIR / "debug.log",
+        },
+    },
+    "root": {
+        "handlers": ["console", "file"],
+        "level": "DEBUG",
+    }, 
+}
 
 
 

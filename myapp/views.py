@@ -7,15 +7,39 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView   
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers 
+import logging
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 # Create your views here.   
+
+logger = logging.getLogger(__name__)
+
 # @login_required
+# @cache_page(60 * 15)
+# @vary_on_headers('User-Agent')
 def index(request):
     # Geting items from database
+    logger.info("Fetching all items from the database")
+    logger.info(f"User [{timezone.now().isoformat()}] {request.user} requested item list from {request.META.get('REMOTE_ADDR')}")
     item_list = Item.objects.all()
+    logger.debug(f"Found {item_list.count()} items")
+    
+    # print(item_list)
+    paginator = Paginator(item_list, 5)
+    # print('paginator', paginator)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)    
     # Creating context
     context = {
-        'item_list': item_list
+        # 'item_list': item_list,
+        'page_obj': page_obj
         }
 #     # Passing the context object to the render method along with the template
     return render(request, "myapp/index.html", context)
@@ -24,10 +48,18 @@ class IndexClassView(ListView):
     model = Item
     template_name = 'myapp/index.html'
     context_object_name = 'item_list'
-
+    
 
 def detail(request, id):
-    item = Item.objects.get(id=id)
+
+    logger.info(f"Fetching an item with id: {id}")
+    try:
+        item = get_object_or_404(Item, pk=id)
+        logger.debug(f"item found {item.item_name} (${item.item_price})")
+    except Exception as e:
+        logger.error(f"Error fetching the item %$: $",id,e)
+        raise
+        # return HttpResponseNotFound(f"Item with id {id} not found")
     context = {
         'item': item
     }
