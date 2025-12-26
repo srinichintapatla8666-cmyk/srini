@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Item
 from.forms import ItemForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView 
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView   
@@ -86,7 +87,7 @@ def create_item(request):
     return render(request, "myapp/item-form.html", context )
 
 
-class ItemCreateView(CreateView):
+class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'myapp/item-form.html'
     fields = ['item_name','item_desc', 'item_price', 'item_image']
@@ -111,7 +112,7 @@ def update_item(request, id):
     return render(request, "myapp/item-form.html",context)
 
 
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
     fields = ['item_name','item_desc', 'item_price', 'item_image']
     template_name_suffix = "_update_form"
