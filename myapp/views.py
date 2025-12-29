@@ -26,7 +26,7 @@ def index(request):
     # Geting items from database
     logger.info("Fetching all items from the database")
     logger.info(f"User [{timezone.now().isoformat()}] {request.user} requested item list from {request.META.get('REMOTE_ADDR')}")
-    item_list = Item.objects.all()
+    item_list = Item.objects.all().order_by('-id')
     logger.debug(f"Found {item_list.count()} items")
     
     # print(item_list)
@@ -81,6 +81,9 @@ def create_item(request):
         if form.is_valid():
             form.save()
             return redirect('myapp:index') 
+        else:
+            print(form.errors['item_price'])
+
     context = {
         'form': form 
     }

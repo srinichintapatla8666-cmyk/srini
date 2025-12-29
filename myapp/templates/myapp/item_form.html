@@ -1,5 +1,28 @@
-<font method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</font>
+{% extends 'myapp/base.html' %}
+<!---->
+{% block body %}
+<!---->
+<div class="flex flex-col items-center justify-center items-center min-h-screen.p-10">
+    <h1>Add Item</h1>
+    {{form.errors['item_price']}}
+    <form method="POST" class="shadow-lg space-y-6 p-10 w-96">
+        <!---->
+        {% csrf_token %}
+        <!---->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <button type="submit">Save</button>
+    </form </div>
+
+
+
+    <font method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </font>
